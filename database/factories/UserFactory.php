@@ -1,0 +1,69 @@
+<?php
+
+use App\User;
+use App\Category;
+use App\Transaction;
+use App\Product;
+use App\Seller;
+use Faker\Generator as Faker;
+
+/*
+|--------------------------------------------------------------------------
+| Model Factories
+|--------------------------------------------------------------------------
+|
+| This directory should contain each of the model factory definitions for
+| your application. Factories provide a convenient way to generate new
+| model instances for testing / seeding your application's database.
+|
+*/
+
+$factory->define(User::class, function (Faker $faker) {
+    static $password;
+
+    $verified = $faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]);
+
+    return [
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('secret'),
+        'remember_token' => str_random(10),
+        'verified' => $verified,
+        'verification_token' => $verified == User::VERIFIED_USER ? null : User::generateVerificationToken(),
+        'admin' => $faker->randomElement([User::ADMIN_USER, User::REGULAR_USER]),
+    ];
+});
+
+$factory->define(Category::class, function (Faker $faker) {
+    return [
+        'name' => $faker->unique()->word,
+        'description' => $faker->paragraph(mt_rand(1, 5)),
+    ];
+});
+
+$factory->define(Product::class, function (Faker $faker) {
+    return [
+        'name' => $faker->word,
+        'description' => $faker->paragraph(1),
+        'quantity' => $faker->numberBetween(1, 10),
+        'status' => $faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
+        'image' => $faker->randomElement([
+            '1502242_z_small.jpg',
+            'galaxy-s7-angle-100642599-large.jpg',
+            'samsung-z3-470x310@2x.jpg',
+        ]),
+        'seller_id' => User::all()->random()->id,
+    ];
+});
+
+$factory->define(Transaction::class, function (Faker $faker) {
+
+    $seller = Seller::has('products')->get()->random();
+    $buyer = User::all()->except($seller->id)->random();
+
+    return [
+        'quantity' => $faker->numberBetween(1, 3),
+        'buyer_id' => $buyer->id,
+        'product_id' => $seller->products->random()->id,
+    ];
+});
