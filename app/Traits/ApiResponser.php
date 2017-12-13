@@ -37,7 +37,7 @@ trait ApiResponser
     }
 
     /**
-     * Sends a successful HTTP response.
+     * Sends an error message.
      *
      * @param  mixed $message
      * @param  int $code
@@ -52,7 +52,7 @@ trait ApiResponser
     }
 
     /**
-     * Sends a successful HTTP response.
+     * Sends a successful HTTP response containing a collection.
      *
      * @param Collection $collection
      * @param  int $code
@@ -64,7 +64,7 @@ trait ApiResponser
     }
 
     /**
-     * Sends a successful HTTP response.
+     * Sends a successful HTTP response containing a model.
      *
      * @param Model $model
      * @param  int $code
@@ -73,5 +73,17 @@ trait ApiResponser
     protected function showOne(Model $model, $code = 200)
     {
         return $this->successResponse(['data' => $model], $code);
+    }
+
+    /**
+     * Sends a message.
+     *
+     * @param string $message
+     * @param  int $code
+     * @return Response
+     */
+    protected function showMessage($message, $code = 200)
+    {
+        return $this->successResponse(['data' => $message], $code);
     }
 }

@@ -48,7 +48,8 @@ Route::resource('categories.buyers', 'Category\CategoryBuyerController', ['only'
 Route::resource('products', 'Product\ProductController', ['only' => ['index', 'show']]);
 Route::resource('products.transactions', 'Product\ProductTransactionController', ['only' => ['index']]);
 Route::resource('products.buyers', 'Product\ProductBuyerController', ['only' => ['index']]);
-Route::resource('products.categories', 'Product\ProductCategoryController', ['only' => ['index', 'update', 'delete']]);
+Route::resource('products.categories', 'Product\ProductCategoryController', ['only' => ['index', 'update', 'destroy']]);
+Route::resource('products.buyers.transactions', 'Product\ProductBuyerTransactionController', ['only' => ['store']]);
 
 /**
  *  Sellers
@@ -57,7 +58,7 @@ Route::resource('sellers', 'Seller\SellerController', ['only' => ['index', 'show
 Route::resource('sellers.transactions', 'Seller\SellerTransactionController', ['only' => ['index']]);
 Route::resource('sellers.categories', 'Seller\SellerCategoryController', ['only' => ['index']]);
 Route::resource('sellers.buyers', 'Seller\SellerBuyerController', ['only' => ['index']]);
-Route::resource('sellers.products', 'Seller\SellerProductController', ['only' => ['index', 'update', 'delete']]);
+Route::resource('sellers.products', 'Seller\SellerProductController', ['except' => ['show', 'edit', 'create']]);
 /**
  *  Transactions
  */
@@ -69,3 +70,4 @@ Route::resource('transactions.sellers', 'Transaction\TransactionSellerController
  *  Users
  */
 Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
+Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');

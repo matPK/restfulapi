@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Seller seller
  * @property string status
  * @property int seller_id
+ * @property int quantity
+ * @property int id
+ * @property string image
  */
 class Product extends Model
 {
@@ -37,6 +40,11 @@ class Product extends Model
     public function isAvailable()
     {
         return $this->status == Product::AVAILABLE_PRODUCT;
+    }
+
+    public function setQuantityAttribute($quantity)
+    {
+        $this->attributes['quantity'] = (integer) $quantity;
     }
 
     public function seller()

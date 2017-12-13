@@ -54,10 +54,9 @@ class User extends Authenticatable
     ];
 
     public function getNameAttribute($name)
-{
-    //return ucwords($this->attributes['name']);
-    return ucwords($name);
-}
+    {
+        return ucwords($name);
+    }
 
     public function setNameAttribute($name)
     {

@@ -126,4 +126,22 @@ class UserController extends ApiController
         $user->delete();
         return $this->deleteResponse();
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  string $token
+     * @return \Illuminate\Http\Response
+     */
+    public function verify($token)
+    {
+        $user = User::where('verification_token', $token)->firstOrFail();
+
+        $user->verified = User::VERIFIED_USER;
+        $user->verification_token = null;
+
+        $user->save();
+
+        return $this->showMessage('The account has been verified');
+    }
 }

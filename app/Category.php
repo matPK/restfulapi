@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property mixed products
+ * @property int id
  */
 class Category extends Model
 {

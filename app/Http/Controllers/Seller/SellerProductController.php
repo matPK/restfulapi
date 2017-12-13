@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Seller;
 
-use App\Product;
-use App\Seller;
-use App\Http\Controllers\ApiController;
+use Storage;
 use App\User;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Seller;
+use App\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
 {
@@ -42,13 +43,12 @@ class SellerProductController extends ApiController
         $data = $request->all();
 
         $data['status'] = Product::UNAVAILABLE_PRODUCT;
-        $data['image'] = '1502242_z_small.jpg';
+        $data['image'] = $request->file('image')->store('products');
         $data['seller_id'] = $seller->id;
 
         $product = Product::create($data);
 
         return $this->showOne($product, 201);
-
     }
 
     /**
@@ -86,6 +86,11 @@ class SellerProductController extends ApiController
             }
         }
 
+        if ($request->hasFile('image')) {
+            Storage::delete($product->image);
+            $product->image = $request->file('image')->store('');
+        }
+
         if ($product->isClean()) {
             return $this->errorResponse('Unprocessable request', 422);
         }
@@ -105,6 +110,9 @@ class SellerProductController extends ApiController
     public function destroy(Seller $seller, Product $product)
     {
         $this->checkSeller($seller, $product);
+
+        Storage::delete($product->image);
+
         $product->delete();
         return $this->deleteResponse();
     }
