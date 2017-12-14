@@ -53,6 +53,17 @@ class User extends Authenticatable
         'deleted_at',
     ];
 
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->verified = $this::UNVERIFIED_USER;
+        $this->admin = $this::REGULAR_USER;
+        $this->verification_token = $this::generateVerificationToken();
+    }
+
     public function getNameAttribute($name)
     {
         return ucwords($name);
@@ -66,6 +77,11 @@ class User extends Authenticatable
     public function setEmailAttribute($email)
     {
         $this->attributes['email'] = $email;
+    }
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
     }
 
     public function isVerified()

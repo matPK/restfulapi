@@ -35,13 +35,12 @@ class UserController extends ApiController
 
         $this->validate($request, $rules);
 
-        $data = $request->all();
-        $data['password'] = bcrypt($request->password);
-        $data['verified'] = User::UNVERIFIED_USER;
-        $data['verification_token'] = User::generateVerificationToken();
-        $data['admin'] = User::REGULAR_USER;
+        $user = new User;
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
+        $user->save();
 
-        $user = User::create($data);
         return $this->showOne($user, 201);
     }
 
@@ -141,7 +140,6 @@ class UserController extends ApiController
         $user->verification_token = null;
 
         $user->save();
-
         return $this->showMessage('The account has been verified');
     }
 }
