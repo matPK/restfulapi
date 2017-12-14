@@ -98,4 +98,12 @@ class User extends Authenticatable
     {
         return str_random(40);
     }
+
+    /**
+     * @return string
+     */
+    public function hiddenFunction()
+    {
+        return "this function does nothing";
+    }
 }
