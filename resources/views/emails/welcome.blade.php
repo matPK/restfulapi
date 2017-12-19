@@ -1,7 +1,3 @@
-Hello {{ $user->name }}
-
-{{ route('verify', $user->verification_token) }}
-
 @component('mail::message')
     # Hello {{ $user->name }},
 
