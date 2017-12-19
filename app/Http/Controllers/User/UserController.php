@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\User;
+use Mail;
+use App\Mail\UserCreated;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use Illuminate\Http\Response;
 
 class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -23,7 +26,7 @@ class UserController extends ApiController
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -48,7 +51,7 @@ class UserController extends ApiController
      * Display the specified resource.
      *
      * @param  User  $user
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(User $user)
     {
@@ -60,12 +63,12 @@ class UserController extends ApiController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  User $user
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, User $user)
     {
         $rules = [
-            'email' => 'email|unique:users,' . $user->id,
+            'email' => 'email|unique:users,email,' . $user->id,
             'password' => 'min:6|confirmed',
             'admin' => 'in:' . User::ADMIN_USER . ',' . User::REGULAR_USER,
         ];
@@ -85,18 +88,6 @@ class UserController extends ApiController
         if ($request->has('password')) {
             $user->password = bcrypt($request->password);
         }
-
-        /*
-        if (
-            $request->has('verified') &&
-            (
-                $request->verified == User::UNVERIFIED_USER ||
-                $request->verified == User::VERIFIED_USER
-             )
-        ) {
-            $user->verified = $request->verified;
-        }
-        */
 
         if ($request->has('admin')) {
             if (!$user->isVerified()) {
@@ -118,7 +109,7 @@ class UserController extends ApiController
      * Remove the specified resource from storage.
      *
      * @param  User $user
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(User $user)
     {
@@ -130,7 +121,7 @@ class UserController extends ApiController
      * Remove the specified resource from storage.
      *
      * @param  string $token
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function verify($token)
     {
@@ -141,5 +132,16 @@ class UserController extends ApiController
 
         $user->save();
         return $this->showMessage('The account has been verified');
+    }
+
+    public function resend(User $user)
+    {
+        if ($user->isVerified()) {
+            return $this->errorResponse('This user is already verified', 409);
+        }
+        retry(5, function() use ($user) {
+            Mail::to($user)->send(new UserCreated($user));
+        },1000);
+        return $this->showMessage('The verification email has been resend');
     }
 }
