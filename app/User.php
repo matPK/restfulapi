@@ -14,6 +14,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string email
  * @property string password
  * @property string admin
+ * @property mixed created_at
+ * @property mixed updated_at
+ * @property mixed deleted_at
  */
 class User extends Authenticatable
 {
