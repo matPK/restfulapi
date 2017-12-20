@@ -19,11 +19,11 @@ class UserTransformer extends TransformerAbstract
             'id' => (int)$user->id,
             'name' => (string)$user->name,
             'email' => (string)$user->email,
-            'isVerified' => (int)$user->verified,
-            'isAdmin' => ($user->admin === User::ADMIN_USER),
-            'creationDate' => $user->created_at,
-            'lastChange' => $user->updated_at,
-            'deletedDate' => !is_null($user->deleted_at) ? (string) $user->deleted_at : null,
+            'is_verified' => (int)$user->verified,
+            'is_admin' => ($user->admin === User::ADMIN_USER),
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+            'deleted_at' => !is_null($user->deleted_at) ? (string) $user->deleted_at : null,
         ];
     }
 }

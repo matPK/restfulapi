@@ -3,12 +3,18 @@
 namespace App;
 
 use App\Product;
+use App\Transformers\CategoryTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property mixed products
  * @property int id
+ * @property mixed deleted_at
+ * @property mixed created_at
+ * @property mixed updated_at
+ * @property mixed name
+ * @property mixed description
  */
 class Category extends Model
 {
@@ -23,6 +29,7 @@ class Category extends Model
         'deleted_at',
         'pivot',
     ];
+    public $transformer = CategoryTransformer::class;
 
     public function products()
     {

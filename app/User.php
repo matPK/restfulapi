@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\UserTransformer;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,6 +28,7 @@ class User extends Authenticatable
     public const ADMIN_USER = 'true';
     public const REGULAR_USER = 'false';
 
+    public $transformer = UserTransformer::class;
     protected $dates = ['deleted_at'];
     protected $table = "users";
 
