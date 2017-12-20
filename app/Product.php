@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\ProductTransformer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,6 +15,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int quantity
  * @property int id
  * @property string image
+ * @property mixed created_at
+ * @property mixed updated_at
+ * @property mixed deleted_at
+ * @property mixed name
+ * @property mixed description
  */
 class Product extends Model
 {
@@ -21,6 +27,8 @@ class Product extends Model
 
     public const AVAILABLE_PRODUCT = 'available';
     public const UNAVAILABLE_PRODUCT = 'unavailable';
+
+    public $transformer = ProductTransformer::class;
 
     protected $dates = ['deleted_at'];
     protected $hidden = [
