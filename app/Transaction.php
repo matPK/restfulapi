@@ -13,6 +13,8 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
+    public $transformer = TransactionTransformer::class;
+
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'quantity',

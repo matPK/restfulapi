@@ -23,6 +23,7 @@ class User extends Authenticatable
     public const UNVERIFIED_USER = '0';
     public const ADMIN_USER = 'true';
     public const REGULAR_USER = 'false';
+    public $transformer = UserTransformer::class;
 
     protected $dates = ['deleted_at'];
     protected $table = "users";

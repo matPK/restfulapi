@@ -14,6 +14,8 @@ class Category extends Model
 {
     use SoftDeletes;
 
+    public $transformer = CategoryTransformer::class;
+
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'name',

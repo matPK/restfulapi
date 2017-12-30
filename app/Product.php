@@ -21,6 +21,7 @@ class Product extends Model
 
     public const AVAILABLE_PRODUCT = 'available';
     public const UNAVAILABLE_PRODUCT = 'unavailable';
+    public $transformer = ProductTransformer::class;
 
     protected $dates = ['deleted_at'];
     protected $hidden = [

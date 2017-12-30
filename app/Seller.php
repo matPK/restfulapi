@@ -9,6 +9,9 @@ use App\Scopes\SellerScope;
  */
 class Seller extends User
 {
+
+    public $transformer = SellerTransformer::class;
+
     protected static function boot()
     {
         parent::boot();
