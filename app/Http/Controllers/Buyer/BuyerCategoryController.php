@@ -14,7 +14,7 @@ class BuyerCategoryController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function index(Buyer $buyer)
-    {
+    {matheuspsycho@hotmail.
         $categories = $buyer->transactions()
             ->with('product.categories')
             ->get()

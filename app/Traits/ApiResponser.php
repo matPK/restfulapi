@@ -52,6 +52,21 @@ trait ApiResponser
     }
 
     /**
+     * Sorts the data of the response
+     *
+     * @param Collection $collection
+     * @return Collection
+     */
+    protected function sortData(Collection $collection)
+    {
+        if (request()->has('sort_by')) {
+            $attribute = request()->sort_by;
+            $collection = $collection->sortBy->{$attribute};
+        }
+        return $collection;
+    }
+
+    /**
      * Sends a successful HTTP response containing a collection.
      *
      * @param Collection $collection
@@ -60,6 +75,7 @@ trait ApiResponser
      */
     protected function showAll(Collection $collection, $code = 200)
     {
+        $collection = $this->sortData($collection);
         return $this->successResponse(['data' => $collection], $code);
     }
 
