@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Scopes\SellerScope;
+use App\Transformers\SellerTransformer;
 
 /**
  * @property mixed products

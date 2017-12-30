@@ -15,12 +15,28 @@ class CategoryTransformer extends TransformerAbstract
     public function transform(Category $category)
     {
         return [
-            'id' => (int)$category->id,
+            'category_id' => (int)$category->id,
             'title' => (string)$category->name,
             'details' => (string)$category->description,
-            'creationDate' => $category->created_at,
-            'lastChangeDate' => $category->updated_at,
-            'deletedDate' => isset($category->deleted_at)?(string)$category->deleted_at:null,
+            'creation_date' => (string)$category->created_at,
+            'last_change_date' => (string)$category->updated_at,
         ];
+    }
+
+    /**
+     * Obtains the original attribute.
+     * @param string $index [the transformed attribute name]
+     * @return mixed
+     */
+    public static function originalAttribute($index)
+    {
+        $attributes = [
+            'category_id' => 'id',
+            'title' => 'name',
+            'details' => 'description',
+            'creation_date' => 'created_at',
+            'last_change_date' => 'updated_at',
+        ];
+        return isset($attributes[$index])?$attributes[$index]:null;
     }
 }

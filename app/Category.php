@@ -5,6 +5,7 @@ namespace App;
 use App\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Transformers\CategoryTransformer;
 
 /**
  * @property mixed products

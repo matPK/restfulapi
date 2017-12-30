@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use App\Transformers\UserTransformer;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**

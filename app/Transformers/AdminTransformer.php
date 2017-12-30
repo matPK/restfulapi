@@ -15,14 +15,28 @@ class AdminTransformer extends TransformerAbstract
     public function transform(Admin $admin)
     {
         return [
-            'uid' => (int)$admin->id,
+            'admin_id' => (int)$admin->id,
             'name' => (string)$admin->name,
             'email' => (string)$admin->email,
-            'isVerified' => ((int)$admin->verified === 1),
-            'isAdmin' => ($admin->admin === User::ADMIN_USER),
-            'creationDate' => $admin->created_at,
-            'lastChangeDate' => $admin->updated_at,
-            'deletedDate' => isset($admin->deleted_at)?(string)$admin->deleted_at:null,
+            'creationDate' => (string)$admin->created_at,
+            'lastChangeDate' => (string)$admin->updated_at,
         ];
+    }
+
+    /**
+     * Obtains the original attribute.
+     * @param string $index [the transformed attribute name]
+     * @return mixed
+     */
+    public static function originalAttribute($index)
+    {
+        $attributes = [
+            'admin_id' => 'id',
+            'name' => 'name',
+            'email' => 'email',
+            'creation_date' => 'created_at',
+            'last_change_date' => 'updated_at',
+        ];
+        return isset($attributes[$index])?$attributes[$index]:null;
     }
 }

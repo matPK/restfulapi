@@ -15,13 +15,30 @@ class TransactionTransformer extends TransformerAbstract
     public function transform(Transaction $transaction)
     {
         return [
-            'id' => (int)$transaction->id,
+            'transaction_id' => (int)$transaction->id,
             'quantity' => (int)$transaction->quantity,
             'buyer' => (int)$transaction->buyer_id,
             'product' => (int)$transaction->product_id,
-            'creationDate' => $transaction->created_at,
-            'lastChangeDate' => $transaction->updated_at,
-            'deletedDate' => isset($transaction->deleted_at)?(string)$transaction->deleted_at:null,
+            'creation_date' => (string)$transaction->created_at,
+            'last_change_date' => (string)$transaction->updated_at,
         ];
+    }
+
+    /**
+     * Obtains the original attribute.
+     * @param string $index [the transformed attribute name]
+     * @return mixed
+     */
+    public static function originalAttribute($index)
+    {
+        $attributes = [
+            'transaction_id' => 'id',
+            'quantity' => 'quantity',
+            'buyer' => 'buyer_id',
+            'product' => 'product_id',
+            'creation_date' => 'created_at',
+            'last_change_date' => 'updated_at',
+        ];
+        return isset($attributes[$index])?$attributes[$index]:null;
     }
 }

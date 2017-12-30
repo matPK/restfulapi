@@ -18,11 +18,29 @@ class UserTransformer extends TransformerAbstract
             'uid' => (int)$user->id,
             'name' => (string)$user->name,
             'email' => (string)$user->email,
-            'isVerified' => ((int)$user->verified === 1),
-            'isAdmin' => ($user->admin === User::ADMIN_USER),
-            'creationDate' => $user->created_at,
-            'lastChangeDate' => $user->updated_at,
-            'deletedDate' => isset($user->deleted_at)?(string)$user->deleted_at:null,
+            'is_verified' => ((int)$user->verified === 1),
+            'is_admin' => ($user->admin === User::ADMIN_USER),
+            'creation_date' => (string)$user->created_at,
+            'last_change_date' => (string)$user->updated_at,
         ];
+    }
+
+    /**
+     * Obtains the original attribute.
+     * @param string $index [the transformed attribute name]
+     * @return mixed
+     */
+    public static function originalAttribute($index)
+    {
+        $attributes = [
+            'uid' => 'id',
+            'name' => 'name',
+            'email' => 'email',
+            'is_verified' => 'verified',
+            'is_admin' => 'admin',
+            'creation_date' => 'created_at',
+            'last_change_date' => 'updated_at',
+        ];
+        return isset($attributes[$index])?$attributes[$index]:null;
     }
 }

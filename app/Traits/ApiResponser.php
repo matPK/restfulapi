@@ -55,12 +55,13 @@ trait ApiResponser
      * Sorts the data of the response
      *
      * @param Collection $collection
+     * @param string $transformer [A transformer class]
      * @return Collection
      */
-    protected function sortData(Collection $collection)
+    protected function sortData(Collection $collection, $transformer)
     {
         if (request()->has('sort_by')) {
-            $attribute = request()->sort_by;
+            $attribute = $transformer::originalAttribute(request()->sort_by);
             $collection = $collection->sortBy->{$attribute};
         }
         return $collection;
@@ -75,20 +76,31 @@ trait ApiResponser
      */
     protected function showAll(Collection $collection, $code = 200)
     {
-        $collection = $this->sortData($collection);
-        return $this->successResponse(['data' => $collection], $code);
+        if ($collection->isEmpty()) {
+            return $this->successResponse($collection, $code);
+        }
+
+        $transformer = $collection->first()->transformer;
+
+        $collection = $this->sortData($collection, $transformer);
+
+        $collection = $this->transformData($collection, $transformer);
+
+        return $this->successResponse($collection, $code);
     }
 
     /**
      * Sends a successful HTTP response containing a model.
      *
-     * @param Model $model
+     * @param Model $instance
      * @param  int $code
      * @return Response
      */
-    protected function showOne(Model $model, $code = 200)
+    protected function showOne(Model $instance, $code = 200)
     {
-        return $this->successResponse(['data' => $model], $code);
+        $transformer = $instance->transformer;
+        $instance = $this->transformData($instance, $transformer);
+        return $this->successResponse($instance, $code);
     }
 
     /**
@@ -101,5 +113,11 @@ trait ApiResponser
     protected function showMessage($message, $code = 200)
     {
         return $this->successResponse(['data' => $message], $code);
+    }
+
+    protected function transformData($data, $transformer)
+    {
+        $transformation = fractal($data, new $transformer);
+        return $transformation->toArray();
     }
 }

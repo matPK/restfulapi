@@ -15,13 +15,30 @@ class BuyerTransformer extends TransformerAbstract
     public function transform(Buyer $buyer)
     {
         return [
-            'uid' => (int)$buyer->id,
+            'buyer_id' => (int)$buyer->id,
             'name' => (string)$buyer->name,
             'email' => (string)$buyer->email,
-            'isVerified' => ((int)$buyer->verified === 1),
-            'creationDate' => $buyer->created_at,
-            'lastChangeDate' => $buyer->updated_at,
-            'deletedDate' => isset($buyer->deleted_at)?(string)$buyer->deleted_at:null,
+            'is_verified' => ((int)$buyer->verified === 1),
+            'creation_date' => (string)$buyer->created_at,
+            'last_change_date' => (string)$buyer->updated_at,
         ];
+    }
+
+    /**
+     * Obtains the original attribute.
+     * @param string $index [the transformed attribute name]
+     * @return mixed
+     */
+    public static function originalAttribute($index)
+    {
+        $attributes = [
+            'buyer_id' => 'id',
+            'name' => 'name',
+            'email' => 'email',
+            'is_verified' => 'verified',
+            'creation_date' => 'created_at',
+            'last_change_date' => 'updated_at',
+        ];
+        return isset($attributes[$index])?$attributes[$index]:null;
     }
 }
