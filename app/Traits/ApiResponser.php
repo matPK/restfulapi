@@ -82,6 +82,7 @@ trait ApiResponser
 
         $transformer = $collection->first()->transformer;
 
+        $collection = $this->filterData($collection, $transformer);
         $collection = $this->sortData($collection, $transformer);
 
         $collection = $this->transformData($collection, $transformer);
@@ -115,9 +116,35 @@ trait ApiResponser
         return $this->successResponse(['data' => $message], $code);
     }
 
+    /**
+     * Transforms the data using the specified Transformer.
+     *
+     * @param mixed $data [a collection or instance of a model]
+     * @param string $transformer
+     * @return array
+     */
     protected function transformData($data, $transformer)
     {
         $transformation = fractal($data, new $transformer);
         return $transformation->toArray();
+    }
+
+    /**
+     * Filters the data.
+     *
+     * @param Collection $collection [an instance of a laravel collection]
+     * @param string $transformer
+     * @return Collection
+     */
+    protected function filterData($collection, $transformer)
+    {
+        foreach (request()->query() as $query => $value) {
+            $attribute = $transformer::originalAttribute($query);
+
+            if (isset($attribute, $value)) {
+                $collection = $collection->where($attribute, $value);
+            }
+        }
+        return $collection;
     }
 }
