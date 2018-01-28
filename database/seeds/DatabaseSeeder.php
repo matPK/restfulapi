@@ -4,6 +4,7 @@ use App\User;
 use App\Product;
 use App\Category;
 use App\Transaction;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,8 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        // $this->call(UsersTableSeeder::class);
+        //DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        $this->call(UsersTableSeeder::class);
+        $this->call(CategoriesTableSeeder::class);
+        $this->call(ProductsTableSeeder::class);
+        $this->call(TransactionsTableSeeder::class);
+        $this->call(CategoryProductTableSeeder::class);
+        /*
         User::truncate();
         Category::truncate();
         Product::truncate();
@@ -28,10 +34,10 @@ class DatabaseSeeder extends Seeder
         Product::flushEventListeners();
         Transaction::flushEventListeners();
 
-        $usersQuantity = 1000;
-        $categoriesQuantity = 30;
-        $productsQuantity = 1000;
-        $transactionsQuantity = 1000;
+        $usersQuantity = 100;
+        $categoriesQuantity = 10;
+        $productsQuantity = 100;
+        $transactionsQuantity = 200;
 
         factory(User::class, $usersQuantity)->create();
         factory(Category::class, $categoriesQuantity)->create();
@@ -40,5 +46,6 @@ class DatabaseSeeder extends Seeder
             $product->categories()->attach($categories);
         });
         factory(Transaction::class, $transactionsQuantity)->create();
+        */
     }
 }

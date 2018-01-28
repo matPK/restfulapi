@@ -8,28 +8,24 @@ Download or clone this repository
 
 In the folder of the project, install the dependencies
 
-    composer update
+    composer install
 
 Copy and rename the ``.env.example`` file to ``.env`` and set into it your database configurations
 
     DB_CONNECTION=mysql
     DB_HOST=host
-    DB_PORT=porta
-    DB_DATABASE=banco
-    DB_USERNAME=usuário
-    DB_PASSWORD=senha
+    DB_PORT=port
+    DB_DATABASE=database
+    DB_USERNAME=username
+    DB_PASSWORD=password
 
 Generate an encryption key for the application
 
     php artisan key:generate
 
-Migrate the database
+Migrate and seed the database
 
-    php artisan migrate
-
-Seed the database
-
-    php artisan db:seed
+    php artisan migrate:fresh --seed
 
 Run local server
 

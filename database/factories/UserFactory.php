@@ -18,6 +18,7 @@ use Faker\Generator as Faker;
 |
 */
 
+/*
 $factory->define(User::class, function (Faker $faker) {
     static $password;
 
@@ -67,3 +68,4 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'product_id' => $seller->products->random()->id,
     ];
 });
+*/
